@@ -11,6 +11,7 @@
 	<!-- update the version number as needed -->
 	<script src="js/jsQR.js?v=1.0"></script>
 	<script src="js/GeminiPro.js?v=1.0"></script>
+	<script src="js/chart.js?v=1.0"></script>
 	<script defer src="/__/firebase/11.0.1/firebase-app-compat.js?v=1.0"></script>
 	<!-- include only the Firebase features as you need -->
 	<script defer src="/__/firebase/11.0.1/firebase-auth-compat.js?v=1.0"></script>
@@ -96,7 +97,7 @@
 
 		.icon {
 			color: white;
-			
+
 		}
 
 		.ctxOpt {
@@ -144,7 +145,7 @@
 			/* IE10+ */
 			user-select: none;
 			transition: opacity 0.3s ease;
-			overflow: hidden;
+			overflow: auto;
 		}
 
 		.draggable {
@@ -212,7 +213,7 @@
 			font-weight: bold;
 		}
 
-		#users{
+		#users {
 			overflow-y: auto;
 		}
 
@@ -360,7 +361,7 @@
 			width: 11%;
 			margin-left: 1%;
 			opacity: 1;
-			
+
 		}
 
 		.sidebar a:hover {
@@ -369,7 +370,7 @@
 			padding-bottom: 20px;
 		}
 
-		.sidebar .titles{
+		.sidebar .titles {
 			align-content: center;
 		}
 
@@ -482,7 +483,7 @@
 
 		/* Sign-in container */
 		.sign-in-container {
-			overflow-y: auto;
+			overflow: auto;
 			background-color: rgba(255, 255, 255, 0.1);
 			padding: 2em;
 			border-radius: 2rem;
@@ -527,7 +528,7 @@
 		/* Form fields */
 		.form-group {
 			margin-bottom: 15px;
-			overflow: visible;
+			overflow: visible
 		}
 
 		.form-group label {
@@ -618,7 +619,7 @@
 			color: #f7f7f7;
 		}
 
-		#quiztxt{
+		#quiztxt {
 			text-align: justify;
 		}
 
@@ -755,7 +756,7 @@
 		#docs {
 			width: 95%;
 			display: none;
-			
+			overflow: auto;
 		}
 
 		#docTbl {
@@ -1006,8 +1007,82 @@
 			background-color: red;
 		}
 
-		#reportArea{
+		#reportArea {
 			background-color: #00000085;
+		}
+
+		.mdeditor-container {
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			overflow: hidden;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		}
+
+		.mdtoolbar {
+			display: flex;
+			gap: 10px;
+			padding: 10px;
+			background: #f1f1f15b;
+			border-bottom: 1px solid #ccc;
+			flex-wrap: wrap;
+			color: #000000;
+		}
+
+		.mdtoolbar button {
+			padding: 8px;
+			border-radius: 4px;
+			cursor: pointer;
+			transition: background 0.3s;
+			font-size: 16px;
+		}
+
+		.mdtoolbar button:hover {
+			background: #ddd;
+		}
+
+		.mdtoolbar button.active {
+			background: #007bff;
+			color: #fff;
+		}
+
+		.mdeditor {
+			padding: 10px;
+			height: 30vh;
+			overflow-y: auto;
+			outline: none;
+			background: #ffffff74;
+			font-size: 16px;
+			color: #161616;
+		}
+
+		.mdeditor:empty:before {
+			content: attr(placeholder);
+			color: #999;
+			pointer-events: none;
+		}
+
+		.dark-mode {
+			background-color: #333;
+			color: #fff;
+		}
+
+		.dark-mode .mdeditor {
+			background-color: #444;
+			color: #fff;
+		}
+
+		.dark-mode .mdtoolbar {
+			background: #555;
+			border-bottom: 1px solid #444;
+		}
+
+		.dark-mode .mdtoolbar button {
+			background: #666;
+			color: #fff;
+		}
+
+		.dark-mode .mdtoolbar button:hover {
+			background: #777;
 		}
 
 		/*.files {
@@ -1042,8 +1117,8 @@
 					class="titles">Quizes</span></a>
 			<a href="#community" onclick="menu('community')"><span class="fas fa-people-group icon"></span>&nbsp;<span
 					class="titles">Community</span></a>
-			<a href="#store" onclick="menu('store')"><span class="fas fa-store icon"></span>&nbsp;<span
-					class="titles">Store</span></a>
+			<a href="#chat" onclick="menu('chat')"><span class="fas fa-robot icon"></span>&nbsp;<span
+					class="titles">ChatBot</span></a>
 			<a href="#report" onclick="menu('report')"><span class="fas fa-flag icon"></span>&nbsp;<span
 					class="titles">Report</span></a>
 			<a href="#" onclick="menu('settings')"><span class="fas fa-gear icon"></span>&nbsp;<span
@@ -1066,8 +1141,8 @@
 						<img id="scard" src="images/scard.png?v=1.0" alt="" onclick="scanQR(true)">
 
 						<div class="form-group">
-							<label for="fname">Family Name<span style="color: red;">*</span></label>
-							<input type="text" class="textField" id="fname" name="fname"
+							<label for="flname">Family Name<span style="color: red;">*</span></label>
+							<input type="text" style="font-weight: normal;" class="textField" id="flname" name="flname"
 								placeholder="Enter your Family Name" required>
 						</div>
 
@@ -1113,15 +1188,6 @@
 								<option value="0">Man</option>
 								<option value="1">Woman</option>
 							</select>
-						</div>
-
-						<div class="form-group">
-							<label for="dscrd">Discord Username<span
-									style="color: orange;font-size: 80%;"><sub>(Optional
-										for
-										Community)</sub></span></label>
-							<input type="text" class="textField" id="dscrd" name="dscrd"
-								placeholder="Enter your Discord Username">
 						</div>
 
 						<div class="form-group">
@@ -1239,11 +1305,16 @@
 					<!--this.parentElement.firstElementChild.value-->
 				</div>
 			</div>
-			<div class="sign-in-container" id="store">
-				<h2>Store</h2>
+			<div class="sign-in-container" id="chat">
+				<h2>ChatBot</h2>
 				<div class="form-group">
-					<textarea class="textField" placeholder="Write anything here..." id="storetxt"
-						style="min-height: 35vh;"></textarea>
+					<h3 class="text-white">Response:</h3>
+					<textarea class="textField back-transp" placeholder="GenAI Response Area..." id="chatres"
+						style="min-height: 30vh;" disabled></textarea>
+					<h3 class="text-white">Message:</h3>
+					<textarea class="textField back-transp" placeholder="Chat with Gemini 1.5 Pro..." id="chatreq"
+						style="min-height: 15vh;"></textarea><button id="chatbtn" class="textField text-black"><span
+							class="fas fa-send icon"></span>Send</button>
 				</div>
 			</div>
 			<div class="sign-in-container" id="community">
@@ -1256,8 +1327,31 @@
 			<div class="sign-in-container" id="inbox">
 				<h2>Inbox</h2>
 				<div class="form-group">
-					<textarea class="textField" placeholder="Write anything here..." id="inboxtxt"
-						style="min-height: 35vh;"></textarea>
+					<input style="width: 75%;" class="textField back-transp" type="text"><button style="width: 25%;">Send</button>
+					<div class="mdeditor-container">
+						<div class="mdtoolbar">
+							<button data-command="bold" title="Bold (Ctrl+B)"><i class="fas fa-bold"></i></button>
+							<button data-command="italic" title="Italic (Ctrl+I)"><i class="fas fa-italic"></i></button>
+							<button data-command="underline" title="Underline (Ctrl+U)"><i
+									class="fas fa-underline"></i></button>
+							<button data-command="strikeThrough" title="Strikethrough"><i
+									class="fas fa-strikethrough"></i></button>
+							<button data-command="insertOrderedList" title="Ordered List"><i
+									class="fas fa-list-ol"></i></button>
+							<button data-command="insertUnorderedList" title="Unordered List"><i
+									class="fas fa-list-ul"></i></button>
+							<button data-command="createLink" title="Insert Link"><i class="fas fa-link"></i></button>
+							<button data-command="formatBlock" data-value="h1" title="Header"><i
+									class="fas fa-heading"></i></button>
+							<button data-command="formatBlock" data-value="blockquote" title="Blockquote"><i
+									class="fas fa-quote-right"></i></button>
+							<button data-command="removeFormat" title="Remove Formatting"><i
+									class="fas fa-eraser"></i></button>
+						</div>
+						<div class="mdeditor" id="mdeditor" contenteditable="true" placeholder="Start typing here...">
+						</div>
+					</div>
+
 				</div>
 			</div>
 			<div class="sign-in-container" id="report">
@@ -1284,6 +1378,51 @@
 		&nbsp;&nbsp;&nbsp;<p><b>&copy; 2024 All Rights Reserved</b></p>
 	</footer>
 	<script>
+		const mdeditor = document.getElementById("mdeditor");
+		const mdtoolbarButtons = document.querySelectorAll(".mdtoolbar button");
+		mdtoolbarButtons.forEach(button => {
+			button.addEventListener("click", () => {
+				const command = button.getAttribute("data-command");
+				const value = button.getAttribute("data-value") || null;
+
+				// Handle link creation
+				if (command === "createLink") {
+					const url = prompt("Enter the URL:", "https://");
+					if (url && url.trim() !== "") {
+						document.execCommand(command, false, url);
+					}
+				} else {
+					document.execCommand(command, false, value);
+				}
+				mdeditor.focus();
+			});
+		});
+
+		// Keyboard shortcuts for bold, italic, and underline
+		mdeditor.addEventListener("keydown", (e) => {
+			if (e.ctrlKey || e.metaKey) {
+				switch (e.key) {
+					case "b":
+						e.preventDefault();
+						document.execCommand("bold");
+						break;
+					case "i":
+						e.preventDefault();
+						document.execCommand("italic");
+						break;
+					case "u":
+						e.preventDefault();
+						document.execCommand("underline");
+						break;
+				}
+			}
+		});
+
+		mdeditor.addEventListener("input", () => {
+			if (mdeditor.innerText.trim() === "") {
+				mdeditor.innerHTML = ""; // Clear empty formatting
+			}
+		});
 		var navmenu = document.getElementById("sidebar")
 		document.getElementsByTagName("header")[0].addEventListener("mouseover", function () {
 			navmenu.style.transform = "scaleY(1)";
@@ -1300,8 +1439,8 @@
 		var smts = [["S1", "S2"], ["S3", "S4"], ["S5", "S6"], ["S5", "S6"]]
 		var lvls = ["L1", "L2", "CS", "AI"]
 		var subs = [[["Algorithmics", "Machine Structure", "Analysis", "Digital", "Algebra", "Automation", "Terminology", "English"], []], [["Algorithmics", "Digital Methods", "Graphs Theory", "Mathematical Logics", "Computer Architecture", "Information System", "English", "Workshop"], []], [[], []], [[], []]]
-		var roles = ["Student", "Teacher", "Manager", "Admin"]
-		icnRol = ["fa-pen-nib", "fa-mortar-board", "fa-shield-halved", "fa-code"]
+		var roles = ["Student", "Parent", "Teacher", "Admin"]
+		icnRol = ["fa-pen-nib", "fa-user-group", "fa-mortar-board", "fa-shield-halved"]
 		var smstr = 0
 		var lastMain;
 		var curMain;
@@ -1459,7 +1598,7 @@
 		}
 		GeminiPro.init()
 		function menu(dist) {
-			var lst = ["home", "admin", "inbox", "quizes", "community", "store", "report", "settings"]
+			var lst = ["home", "admin", "inbox", "quizes", "community", "chat", "report", "settings"]
 			if (localStorage.getItem("signedin")) {
 				if (dist == "logout") {
 					localStorage.clear()
@@ -1471,9 +1610,9 @@
 				switch (dist) {
 					case lst[1]:
 						show(dist)
-						/*firebase.database().ref("/users").get().then(r => {
-							var usr = usersToArray(r.val())*/
-						usr = [{
+						firebase.database().ref("/users").get().then(r => {
+							var usr = usersToArray(r.val())
+						/*usr = [{
 							"birth": "2004-11-22", "dscrd": "Discord", "fname": "Family", "gendr": "0", "level": "1", "name": "Sid Ali Ilyes",
 							"phone": "0698761907", "role": 3, "sectn": "0", "stdid": "232331782501", "time": 1731802846353, "user": "lixTx8Y7ISMcdeHMcXn8hUxvOUu2"
 						}]
@@ -1490,13 +1629,13 @@
 						usr.push({
 							"birth": "2004-11-22", "dscrd": "Discord", "fname": "Family", "gendr": "1", "level": "1", "name": "Sid Ali Ilyes",
 							"phone": "0698761907", "role": 0, "sectn": "0", "stdid": "232331782501", "time": 1731802846353, "user": "lixTx8Y7ISMcdeHMcXn8hUxvOUu2"
-						})
+						})*/
 						local.users = usr
 						var icn = ["fa-pen-nib", "fa-mortar-board", "fa-shield-halved", "fa-code"]
 						var users = document.getElementById("users")
-						var cnt = "<tr><th><!--<span class='fas fa-navicon'></span>--></th><th>Name</th><th>Year</th><th>Section</th><th>Discord</th></tr>"
+						var cnt = "<tr><th><!--<span class='fas fa-navicon'></span>--></th><th>Name</th><th>Year</th><th>Section</th><th>Presence</th></tr>"
 						for (var i = 0; i < usr.length; i++) {
-							cnt += "<tr onclick='clkUsr(this,'" + usr[i].user + "')' class='studrow " + (!parseInt(usr[i].gendr) ? "studrow-male" : "studrow-fmale") + "'><td id='icons' title='" + roles[usr[i].role] + "'><span class='fas " + icn[usr[i].role] + "'></span></td><td>" + usr[i].name + "</td><td>" + (parseInt(usr[i].level) + 1) + "</td><td>L" + getSectn(usr[i].level, usr[i].sectn) + "</td><td>" + usr[i].dscrd + "</td></tr>"
+							cnt += "<tr onclick='clkUsr(this,'" + usr[i].user + "')' class='studrow " + (!parseInt(usr[i].gendr) ? "studrow-male" : "studrow-fmale") + "'><td id='icons' title='" + roles[usr[i].role] + "'><span class='fas " + icn[usr[i].role] + "'></span></td><td>" + usr[i].name + "</td><td>" + (parseInt(usr[i].level) + 1) + "</td><td>L" + getSectn(usr[i].level, usr[i].sectn) + "</td><td onclick=''><span class='fas fa-circle'></span></td></tr>"
 						}
 						users.innerHTML = cnt
 						main.admin.users = usr
@@ -1559,7 +1698,7 @@
 								pidx = main.admin.rows.indexOf(pevt.target.parentElement) - 1
 								oper[cmnu.indexOf(mevt.target.innerText.trim())](pevt, pidx)
 							}, "TD")
-						//}).catch(fcatch)
+						}).catch(fcatch)
 						break;
 					case lst[2]:
 						show(dist)
@@ -1657,7 +1796,17 @@
 						break;
 					case lst[5]:
 						show(dist)
-						coming(dist)
+						GeminiPro.startChat()
+						var req = document.getElementById("chatreq")
+						var res = document.getElementById("chatres")
+						var btn = document.getElementById("chatbtn")
+						btn.addEventListener("click", function () {
+
+							GeminiPro.sendChat(req.value).then(r => {
+								res.value = r
+							}).catch(fcatch)
+
+						})
 						break;
 					case lst[6]:
 						show(dist)
@@ -1923,10 +2072,10 @@
 			var doc = document.getElementById("docTbl")
 			var cnt = "<thead><tr><th rowspan='2'>Type</th><th colspan='2'>Filename</th><th rowspan='2'>Size</th><th rowspan='2'>Control</th></tr><tr><th colspan='2'>Date</th></tr></thead><tbody>"
 			main.doc.ref = "/docs/" + fldr
-			/*/firebase.database().ref("/docs/" + fldr).get().then(r => {
+			firebase.database().ref("/docs/" + fldr).get().then(r => {
 				if (r.exists()) {
-					var g = r.val()*/
-			g = {
+					var g = r.val()
+			/*g = {
 				"UjgjuWzcjoLjB3D8sXfglQ==": {
 					"contentDisposition": "inline; filename*=utf-8''db.c",
 					"contentEncoding": "identity",
@@ -2011,7 +2160,7 @@
 					"updated": "2024-11-29T22:38:02.320Z",
 					"user": "lixTx8Y7ISMcdeHMcXn8hUxvOUu2"
 				}
-			}
+			}*/
 			var k = Object.getOwnPropertyNames(g)
 			for (var i = 0; i < k.length; i++) {
 				var key = k[i]
@@ -2025,14 +2174,14 @@
 				cnt += `<tr class="files"><td><img src="${getFileIcon(k[i].name)}?v=1.0" alt="FileIcon"></td><td colspan="2" id="fname" onclick="dwnDoc('${k[i].downUrl}')">${k[i].name}</td><td colspan='2'>${timeAgo(k[i].timeCreated)}</td><td>${fileSize(k[i].size)}</td><td><button class="validate" onclick="download('${k[i].downUrl}','${k[i].name}')"><span class="fas fa-download"></span>&nbsp;Download</button></td></tr>`
 			}
 
-			/*} else {
+			} else {
 				cnt += "<tr><td colspan=5>Folder Empty</td></tr>"
-			}*/
+			}
 			cnt += "</tbody>"
 			doc.innerHTML = cnt
 			main.doc.rows = Array.from(doc.rows)
 			main.doc.files = k
-			//}).catch(fcatch)
+			}).catch(fcatch)
 			doc.addEventListener("click", function (evt) {
 				const clickedElement = evt.target;
 				if (clickedElement.tagName === 'TD') {
@@ -2254,7 +2403,7 @@
 								show("sign-in-container")
 								var dd = code.data.split("\n")
 								var nn = dd[0].split(" ")
-								document.getElementById("fname").value = nn[0]
+								document.getElementById("flname").value = nn[0]
 								document.getElementById("name").value = nn.slice(1).join(" ")
 								document.getElementById("birth").value = dd[2].split("/").reverse().join("-")
 								document.getElementById("stdid").value = dd[3].match(/\d+/gm)
@@ -2300,7 +2449,7 @@
 			var d = document.getElementById('sectn').value.split("")
 
 			local.data = {
-				fname: document.getElementById('fname').value,
+				fname: document.getElementById('flname').value,
 				name: document.getElementById('name').value,
 				stdid: document.getElementById('stdid').value,
 				birth: document.getElementById('birth').value,
